@@ -72,9 +72,21 @@ const updateEnvelope = (instance) => {
 
 const getEnvelopeById = (id) => envelopes.find((e) => e.id === id);
 
+const deleteEnvelope = (id) => {
+    const instanceIndex = envelopes.findIndex((element) => {
+        return element.id === id;
+    });
+    if (instanceIndex === -1) return null;
+    const deletedEnvelope = envelopes[instanceIndex];
+    envelopes.splice(instanceIndex, 1);
+    totalBudget -= deletedEnvelope.budget;
+    return deletedEnvelope;
+};
+
 module.exports = {
   getAllEnvelopes,
   getEnvelopeById,
   createEnvelope,
-  updateEnvelope
+  updateEnvelope,
+  deleteEnvelope
 };
