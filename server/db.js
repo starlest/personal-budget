@@ -53,6 +53,28 @@ const createEnvelope = (instance) => {
   return newEnvelope;
 };
 
+const updateEnvelope = (instance) => {
+  const instanceIndex = envelopes.findIndex((element) => {
+    return element.id === instance.id;
+  });
+  if (instanceIndex === -1) return null;
+  const oldEnvelope = envelopes[instanceIndex];
+  const newEnvelope = {
+    id: oldEnvelope.id,
+    title: instance.title || oldEnvelope.title,
+    budget: instance.budget || oldEnvelope.budget,
+  };
+  if (!isValidEnvelope(newEnvelope)) return null;
+  envelopes[instanceIndex] = newEnvelope;
+  totalBudget += newEnvelope.budget - oldEnvelope.budget;
+  return newEnvelope;
+};
+
 const getEnvelopeById = (id) => envelopes.find((e) => e.id === id);
 
-module.exports = { getAllEnvelopes, getEnvelopeById, createEnvelope };
+module.exports = {
+  getAllEnvelopes,
+  getEnvelopeById,
+  createEnvelope,
+  updateEnvelope
+};
