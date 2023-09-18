@@ -53,4 +53,23 @@ envelopesRouter.delete("/:envelopeId", (req, res, next) => {
   }
 });
 
+envelopesRouter.post("/transfer/:from/:to", (req, res, next) => {
+  const from = getEnvelopeById(parseInt(req.params.from));
+  const to = getEnvelopeById(parseInt(req.params.to));
+  if (!from || !to) {
+    res.status(404).send("Not Found");
+  } else {
+    const amount = parseInt(req.body.amount);
+    if (isNaN(amount) || amount <= 0) {
+      res.status(400).send("Bad Request");
+    } else if (from.budget < amount) {
+      res.status(400).send("Bad Request");
+    } else {
+      from.budget -= amount;
+      to.budget += amount;
+      res.status(200).send([from, to]);
+    }
+  }
+});
+
 module.exports = envelopesRouter;
